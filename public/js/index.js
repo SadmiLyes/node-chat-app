@@ -1,7 +1,7 @@
 var socket = io();
 
-socket.on('connect', ()=>{
-    console.log('Connected to the server')
+socket.on('connection', (message)=>{
+    console.log(message);
 })
 
 socket.on('disconnect',()=>{
