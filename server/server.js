@@ -19,14 +19,17 @@ io.on('connection', (socket) => {
 
     socket.broadcast.emit('newMessage',generateMessage('Admin','New User Joined!'));
 
-    socket.on('createMessage', (message) => {
+    socket.on('createMessage', (message,callback) => {
         console.log('Created Message : ', message);
         io.emit('newMessage',generateMessage(message.from,message.text));
+        callback('This is from the server');
     });
 
     socket.on('disconnect', () => {
         console.log('Client disconnected');
     })
+
+
 })
 
 server.listen(port, () => {
