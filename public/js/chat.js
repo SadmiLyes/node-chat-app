@@ -9,6 +9,16 @@ socket.on('disconnect', () => {
     console.log('disconnected from the server')
 })
 
+socket.on('updateUserList',function(users){
+    console.log('Users List : ', users);
+    var ol = $('<ol>');
+    users.forEach(function(user){
+        ol.append($('<li>',{text: user}))
+    })
+    $('#users').html(ol);
+})
+
+
 socket.on('newMessage', function (message) {
     var template = $('#message-template').html();
     var formattedTime = moment(message.createdAt).format('h:mm a');
@@ -60,6 +70,19 @@ locationButton.attr('disabled','true').text('Sending Location...');
         alert('Unable to find location');
         locationButton.removeAttr('disabled').text('Send Location');
     })
+})
+
+socket.on('connect',function(){
+    var params = $.deparam(location.search);
+
+    socket.emit('join', params,function(err){
+        if(err){
+            alert(err);
+            window.location.href = '/';
+        } else {
+            console.log('no error')
+        }
+    });
 })
 
 function scrollToBottom() {
